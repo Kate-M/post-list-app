@@ -1,11 +1,9 @@
 $(document).ready(function () {
-
+    var usersList;
     $.ajax({
         url: "https://jsonplaceholder.typicode.com/users",
     }).done(function (result) {
-        var usersList = JSON.stringify(result);
-        localStorage.setItem('usersDB', usersList)
-
+        usersList = result;
     }).fail(function () {
         console.log('user fail');
     });
@@ -13,20 +11,8 @@ $(document).ready(function () {
     $.ajax({
         url: "https://jsonplaceholder.typicode.com/posts",
     }).done(function (result) {
-        var posts = [];
-
-        Array.isArray(result)?posts = result : posts.push(result);
-
-        if (typeof (Storage) !== 'undefined') {
-            if (localStorage.getItem('usersDB')) {
-                var usersList = JSON.parse(localStorage.getItem('usersDB'));
-                
-            }
-        } else {
-            console.log('Sorry! No Web Storage support');
-        }
         
-        posts.forEach(element => {
+        result.forEach(element => {
             var userName = getUserName(element.userId);
 
             $("#post-area").append(`
@@ -43,11 +29,10 @@ $(document).ready(function () {
                 `);
         });
         function getUserName(userID) {
-            var currentUser = usersList.filter((element, index) => {
-                if(element.id == userID) 
-                return element.name;
+            var currentUser = usersList.find((element, index) => {
+                return element.id == userID;
             });
-            return currentUser[0].name;
+            return currentUser.name;
         }
 
     }).fail(function () {

@@ -44,13 +44,15 @@ $(document).ready(function () {
     }
 
     function commentsAdapter(event) {
+        let target = $(event.target);
         event.preventDefault();
-        let target = $(event.target),
-            postMessage = $(event.target).parents('.post-item').find('.post-message');
-        toggleContainer(postMessage);
-        if (!postMessage.find('.comments-list').length) {
-            postMessage.append('<ul class="comments-list"></ul>');
-            getComments(postMessage, target);
+        if (target.hasClass('btn-comment')) {
+            let postMessage = $(event.target).parents('.post-item').find('.post-message');
+            toggleContainer(postMessage);
+            if (!postMessage.find('.comments-list').length) {
+                postMessage.append('<ul class="comments-list"></ul>');
+                getComments(postMessage, target);
+            }
         }
     }
 
@@ -58,31 +60,29 @@ $(document).ready(function () {
 
         let messageContainer = container.find('.post-body');
 
-        if (targetElement.hasClass('btn-comment')) {
-            let postId = targetElement.data('post-id');
+        let postId = targetElement.data('post-id');
 
-            fetch('https://jsonplaceholder.typicode.com/comments')
-                .catch(e => e)
-                .then(response => response.json())
-                .then(function (result) {
-                    let currentComments = result.filter(element => element.postId === postId);
-                    if (currentComments.length === 0) {
-                        messageContainer.html('No comments yet');
-                    }
-                    currentComments.forEach(element =>
-                        getCommentsView(container, element.id, element.name)
-                    );
-                })
-                .catch(function (e) {
-                    messageContainer.html('Error loading comments');
-                });
-        }
+        fetch('https://jsonplaceholder.typicode.com/comments')
+            .catch(e => e)
+            .then(response => response.json())
+            .then(function (result) {
+                let currentComments = result.filter(element => element.postId === postId);
+                if (currentComments.length === 0) {
+                    messageContainer.html('No comments yet');
+                }
+                currentComments.forEach(element =>
+                    getCommentsView(container, element.id, element.name)
+                );
+            })
+            .catch(function (e) {
+                messageContainer.html('Error loading comments');
+            });
     }
 
     function toggleContainer(container) {
         container.toggleClass('comments-mode');
     }
-    
+
     function getCommentsView(constainer, id, name) {
         constainer.find('.comments-list')
             .append(`<li class="comment-item">

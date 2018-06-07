@@ -1,44 +1,41 @@
 $(document).ready(function () {
-    var usersList;
-    $.ajax({
-        url: "https://jsonplaceholder.typicode.com/users",
-    }).done(function (result) {
-        usersList = result;
-    }).fail(function () {
-        console.log('user fail');
-    });
+    $.when($.ajax("https://jsonplaceholder.typicode.com/users"),
+        $.ajax("https://jsonplaceholder.typicode.com/posts"))
 
-    $.ajax({
-        url: "https://jsonplaceholder.typicode.com/posts",
-    }).done(function (result) {
-        
-        result.forEach(element => {
-            var userName = getUserName(element.userId);
+        .done(function (usersList, postsList) {
+            var usersList = usersList[0],
+                postsList = postsList[0];
 
-            $("#post-area").append(`
-                    <li class="post-item">
-                        <p class="post-name">${element.title}</p>
-                        <div class="post-message">
-                            <p>${element.body}</p>
-                        </div>
-                        <div class="post-content">
-                            <p class="user">${userName}</p>
-                            <a href="" class="btn-comment commets">Comments</a>
-                        </div>
-                    </li>
-                `);
-        });
-        function getUserName(userID) {
-            var currentUser = usersList.find((element, index) => {
-                return element.id == userID;
+            postsList.forEach(element => {
+                var userName = getUserName(element.userId);
+                getView(element.title, element.body, userName);
+
             });
-            return currentUser.name;
-        }
+            function getView(title, body, name) {
+                $("#post-area").append(`
+                            <li class="post-item">
+                                <p class="post-name">${title}</p>
+                                <div class="post-message">
+                                    <p>${body}</p>
+                                </div>
+                                <div class="post-content">
+                                    <p class="user">${name}</p>
+                                    <a href="" class="btn-comment commets">Comments</a>
+                                </div>
+                            </li>
+                        `);
+            }
+            function getUserName(userID) {
+                var currentUser = usersList.find((element, index) => {
+                    return element.id == userID;
+                });
+                return currentUser.name;
+            }
 
-    }).fail(function () {
-        $("#post-area").html('error');
-    });
-
+        })
+        .fail(function () {
+            $("#post-area").html('Error');
+        });
 });
 
 

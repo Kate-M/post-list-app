@@ -1,18 +1,30 @@
 $(document).ready(function () {
-    $.when($.ajax("https://jsonplaceholder.typicode.com/users"),
-        $.ajax("https://jsonplaceholder.typicode.com/posts"))
+    init();
 
-        .done(function (usersList, postsList) {
-            var usersList = usersList[0],
-                postsList = postsList[0];
-
-            postsList.forEach(element => {
-                var userName = getUserName(element.userId);
-                getView(element.title, element.body, userName);
-
+    function init() {
+        let urls = ['https://jsonplaceholder.typicode.com/users', 'https://jsonplaceholder.typicode.com/posts'],
+            promises = urls.map(url => fetch(url)
+                .catch(e => e)
+                .then(response => response.json())
+            );
+        Promise.all(promises).then(
+            results => {
+                var usersList = results[0],
+                    postsList = results[1];
+                postsList.forEach(element => {
+                    var userName = getUserName(usersList, element.userId);
+                    getView(element.title, element.body, userName, element.id);
+                });
+            }
+        )
+            .catch(function (e) {
+                $("#post-area").html('Error');
+                console.log(e);
             });
-            function getView(title, body, name) {
-                $("#post-area").append(`
+    }
+
+    function getView(title, body, name, id) {
+        $("#post-area").append(`
                             <li class="post-item">
                                 <p class="post-name">${title}</p>
                                 <div class="post-message">
@@ -20,22 +32,16 @@ $(document).ready(function () {
                                 </div>
                                 <div class="post-content">
                                     <p class="user">${name}</p>
-                                    <a href="" class="btn-comment commets">Comments</a>
+                                    <a href="" class="btn-comment commets" data-post-id="${id}">Comments</a>
                                 </div>
                             </li>
                         `);
-            }
-            function getUserName(userID) {
-                var currentUser = usersList.find((element, index) => {
-                    return element.id == userID;
-                });
-                return currentUser.name;
-            }
+    }
 
-        })
-        .fail(function () {
-            $("#post-area").html('Error');
-        });
+    function getUserName(usersList, userID) {
+        let currentUser = usersList.find(element => element.id === userID);
+        return currentUser.name;
+    }
 });
 
 

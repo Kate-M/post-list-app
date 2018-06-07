@@ -15,12 +15,11 @@ $(document).ready(function () {
                     let userName = getUserName(usersList, element.userId);
                     getPostsView(element.title, element.body, userName, element.id);
                 });
-                $('#post-area').on('click', getComments);
+                $('#post-area').on('click', commentsAdapter);
             }
         )
             .catch(function (e) {
                 $("#post-area").html('Error');
-                console.log(e);
             });
     }
 
@@ -29,7 +28,7 @@ $(document).ready(function () {
                             <li class="post-item">
                                 <p class="post-name">${title}</p>
                                 <div class="post-message">
-                                    <p>${body}</p>
+                                    <p class="post-body">${body}</p>
                                 </div>
                                 <div class="post-content">
                                     <p class="user">${name}</p>
@@ -44,14 +43,24 @@ $(document).ready(function () {
         return currentUser.name;
     }
 
-    function getComments(event) {
+    function commentsAdapter(event) {
         event.preventDefault();
         let target = $(event.target),
-            postMessage = $(event.target).parents('.post-item').find('.post-message'),
-            messageContainer = postMessage.find('p');
+            postMessage = $(event.target).parents('.post-item').find('.post-message');
+        toggleContainer(postMessage);
+        if (!postMessage.find('.comments-list').length) {
+            postMessage.append('<ul class="comments-list"></ul>');
+            getComments(postMessage, target);
+        }
+    }
 
-        if (target.hasClass('btn-comment')) {
-            let postId = $(event.target).data('post-id');
+    function getComments(container, targetElement) {
+
+        let messageContainer = container.find('.post-body');
+
+        if (targetElement.hasClass('btn-comment')) {
+            let postId = targetElement.data('post-id');
+
             fetch('https://jsonplaceholder.typicode.com/comments')
                 .catch(e => e)
                 .then(response => response.json())
@@ -60,10 +69,8 @@ $(document).ready(function () {
                     if (currentComments.length === 0) {
                         messageContainer.html('No comments yet');
                     }
-                    postMessage.empty().html('<ul class="comments-list"></ul>');
-
                     currentComments.forEach(element =>
-                        getCommentsView(postMessage, element.id, element.name)
+                        getCommentsView(container, element.id, element.name)
                     );
                 })
                 .catch(function (e) {
@@ -71,11 +78,15 @@ $(document).ready(function () {
                 });
         }
     }
+
+    function toggleContainer(container) {
+        container.toggleClass('comments-mode');
+    }
+    
     function getCommentsView(constainer, id, name) {
         constainer.find('.comments-list')
             .append(`<li class="comment-item">
                         <a href="" class="btn btn-open-comment">
-                            <span class="comment-number">${id}.</span>
                             <span class="comment-text">${name}</span>
                         </a>
                     </li>`);

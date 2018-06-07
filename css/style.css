@@ -33,7 +33,7 @@ header {
     border-radius:5px;
     padding: 15px;
     display: inherit;
-    grid-template-rows: 1fr 150px 1fr;
+    grid-template-rows: 1fr 130px 1fr;
 }
 .post-name {
     color:#7a3a3a;
@@ -68,6 +68,9 @@ header {
 .btn-comment:hover {
     background: #caab8b;
 }
+.comments-list {
+    display: none;
+}
 .comment-item {
     width: 100%;
     padding: 2.5px 0;
@@ -81,4 +84,10 @@ header {
 }
 .btn-open-comment:hover {
     color: inherit;
+}
+.comments-mode .post-body{
+    display: none;
+}
+.comments-mode .comments-list{
+    display: block;
 }

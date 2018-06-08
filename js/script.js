@@ -98,7 +98,7 @@ $(document).ready(function () {
     }
 
     function initPagination(postArea) {
-        let currentArea = postArea.attr('id'),
+        let currentArea = postArea.before('<div class="holder"></div>').attr('id'),
         CURRENT_COUNT = 10;
 
         $("div.holder").jPages({

@@ -91,3 +91,31 @@ header {
 .comments-mode .comments-list{
     display: block;
 }
+.holder {
+    text-align: center;
+    padding: 10px 0;
+}
+.holder a {
+    padding:5px 10px;
+    border-radius:5px;
+    margin: 0 5px;
+    text-decoration: none;
+    color: #2fa09a;
+    background: #ffffff;
+    border:1px solid #2fa09a;
+    display: inline-block;
+    min-width: 18px;
+}
+.holder a:not(.jp-current):hover {
+    background: #2fa09a;
+    color:#ffffff;
+    cursor: pointer;
+}
+.holder a.jp-current:hover {
+    cursor: default;
+}
+.holder a.jp-current {
+    color: #ffffff;
+    background: #278682;
+    border:1px solid #278682;
+}

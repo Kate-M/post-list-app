@@ -22,7 +22,10 @@
     padding: 2.5px 5px;
 }
 .btn-open-comment:hover {
-    color: inherit;
+    background: #d6bdaa;
+}
+.btn-open-comment:focus {
+    background: rgba(39,134,130,.3);
 }
 .comments-mode .post-body{
     display: none;

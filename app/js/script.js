@@ -30,13 +30,15 @@ $(document).ready(function () {
     function renderPosts(title, body, name, id, container) {
         $(container).append(`
                             <li class="post-item">
-                                <p class="post-name">${title}</p>
-                                <div class="post-message">
-                                    <p class="post-body">${body}</p>
-                                </div>
-                                <div class="post-content">
-                                    <p class="user">${name}</p>
-                                    <a href="" class="btn btn-comment" data-post-id="${id}">Comments</a>
+                                <div class="post-wrap">
+                                    <p class="post-name">${title}</p>
+                                    <div class="post-message">
+                                        <p class="post-body">${body}</p>
+                                    </div>
+                                    <div class="post-content">
+                                        <p class="user">${name}</p>
+                                        <a href="" class="btn btn-comment" data-post-id="${id}">Comments</a>
+                                    </div>
                                 </div>
                             </li>
                         `);

@@ -6,25 +6,27 @@ $(document).ready(function () {
             promises = urls.map(url => fetch(url)
                 .catch(e => e)
                 .then(response => response.json())
-            );
+            ),
+            postArea = $("#post-area");
+
         Promise.all(promises).then(
             results => {
                 let usersList = results[0],
                     postsList = results[1];
                 postsList.forEach(element => {
                     let userName = getUserName(usersList, element.userId);
-                    getPostsView(element.title, element.body, userName, element.id);
+                    renderPosts(element.title, element.body, userName, element.id, postArea);
                 });
-                $('#post-area').on('click', commentsAdapter);
+                $(postArea).on('click', commentsAdapter);
             }
         )
             .catch(function (e) {
-                $("#post-area").html('Error');
+                $(postArea).html('Error');
             });
     }
 
-    function getPostsView(title, body, name, id) {
-        $("#post-area").append(`
+    function renderPosts(title, body, name, id, container) {
+        $(container).append(`
                             <li class="post-item">
                                 <p class="post-name">${title}</p>
                                 <div class="post-message">
@@ -40,6 +42,7 @@ $(document).ready(function () {
 
     function getUserName(usersList, userID) {
         let currentUser = usersList.find(element => element.id === userID);
+
         return currentUser.name;
     }
 
@@ -57,9 +60,7 @@ $(document).ready(function () {
     }
 
     function getComments(container, targetElement) {
-
         let messageContainer = container.find('.post-body');
-
         let postId = targetElement.data('post-id');
 
         fetch('https://jsonplaceholder.typicode.com/comments')
@@ -71,7 +72,7 @@ $(document).ready(function () {
                     messageContainer.html('No comments yet');
                 }
                 currentComments.forEach(element =>
-                    getCommentsView(container, element.id, element.name)
+                    renderComments(container, element.id, element.name)
                 );
             })
             .catch(function (e) {
@@ -83,7 +84,7 @@ $(document).ready(function () {
         container.toggleClass('comments-mode');
     }
 
-    function getCommentsView(constainer, id, name) {
+    function renderComments(constainer, id, name) {
         constainer.find('.comments-list')
             .append(`<li class="comment-item">
                         <a href="" class="btn btn-open-comment">
@@ -93,5 +94,3 @@ $(document).ready(function () {
     }
 
 });
-
-

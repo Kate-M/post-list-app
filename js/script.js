@@ -13,10 +13,14 @@ $(document).ready(function () {
             results => {
                 let usersList = results[0],
                     postsList = results[1];
+
                 postsList.forEach(element => {
                     let userName = getUserName(usersList, element.userId);
                     renderPosts(element.title, element.body, userName, element.id, postArea);
                 });
+
+                initPagination(postArea);
+
                 $(postArea).on('click', commentsAdapter);
             }
         )
@@ -93,4 +97,18 @@ $(document).ready(function () {
                     </li>`);
     }
 
+    function initPagination(postArea) {
+        let currentArea = postArea.attr('id'),
+        CURRENT_COUNT = 10;
+
+        $("div.holder").jPages({
+            containerID: currentArea,
+            first: false,
+            previous: false,
+            next: false,
+            last: false,
+            perPage: CURRENT_COUNT,
+            midRange: CURRENT_COUNT
+        });
+    }
 });

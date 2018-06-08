@@ -1,0 +1,28 @@
+h1 {
+    margin: 0;
+    color: lightseagreen;
+}
+ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+p {
+    margin: 0;
+}
+*::selection {
+    color: #7a3a3a;
+    background: #d7bc9f;
+}
+header {
+    padding: 10px;
+}
+.wrapper {
+    max-width: 1024px;
+    margin: 0 auto;
+}
+
+.btn {
+    text-decoration: none;
+    display: block;
+}

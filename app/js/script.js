@@ -1,14 +1,13 @@
 $(document).ready(function () {
     init();
-
+    
     function init() {
         let urls = ['https://jsonplaceholder.typicode.com/users', 'https://jsonplaceholder.typicode.com/posts'],
             promises = urls.map(url => fetch(url)
-                .catch(e => e)
                 .then(response => response.json())
             ),
             postArea = $("#post-area");
-
+            
         Promise.all(promises).then(
             results => {
                 let usersList = results[0],
@@ -18,7 +17,6 @@ $(document).ready(function () {
                     let userName = getUserName(usersList, element.userId);
                     renderPosts(element.title, element.body, userName, element.id, postArea);
                 });
-
                 initPagination(postArea);
 
                 $(postArea).on('click', commentsAdapter);
@@ -68,7 +66,6 @@ $(document).ready(function () {
         let postId = targetElement.data('post-id');
 
         fetch('https://jsonplaceholder.typicode.com/comments')
-            .catch(e => e)
             .then(response => response.json())
             .then(function (result) {
                 let currentComments = result.filter(element => element.postId === postId);

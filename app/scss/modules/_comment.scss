@@ -1,0 +1,32 @@
+.btn-comment {
+    padding: 5px;
+    background: #d7bc9f;
+    color: #3d362e;
+    border-radius:5px;
+}
+.btn-comment:hover {
+    background: #caab8b;
+}
+.comments-list {
+    display: none;
+}
+.comment-item {
+    width: 100%;
+    padding: 2.5px 0;
+}
+.btn-open-comment {
+    box-sizing: border-box;
+    width: 100%;
+    background: #f3e9e1;
+    color: #333333;
+    padding: 2.5px 5px;
+}
+.btn-open-comment:hover {
+    color: inherit;
+}
+.comments-mode .post-body{
+    display: none;
+}
+.comments-mode .comments-list{
+    display: block;
+}

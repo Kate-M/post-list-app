@@ -1,0 +1,52 @@
+* {
+    transition: background .3s, color .3s, filter .3s;
+}
+a {
+    color:inherit;
+    text-decoration: none;
+    &:focus {
+      outline: none;
+      border-color:transparent; 
+    }
+}
+h1,figure,fieldset{
+      margin: 0;
+      padding: 0;
+}
+input,select, textarea, option {
+    appearance: none;
+    -ms-appearance: none;
+    border-radius:0;
+    border: 0;
+    padding: 0;
+    &:focus, &:active {
+      outline:0;
+    }
+}
+label {
+    cursor: pointer;
+    user-select: none;
+}
+fieldset {
+    border:none;
+}
+body{
+    overflow-x: hidden;
+    height: 100%;
+}
+button {
+    cursor: pointer;
+    font-family: inherit;
+    color: inherit;
+    appearance: none;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    letter-spacing: 0.4px;
+    line-height: 1;
+    user-select: none;
+    &:focus,&:active  {
+      appearance: none;
+      outline:none;
+    }
+}
